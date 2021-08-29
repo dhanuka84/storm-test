@@ -14,35 +14,33 @@ import backtype.storm.tuple.Tuple;
  */
 public class FilePrinterBolt extends BaseBasicBolt {
 
-	private static final long serialVersionUID = 327323938874334973L;
-	File outputFile;
+    private static final long serialVersionUID = 327323938874334973L;
+    File outputFile;
 
-	/**
-	 * Instantiates a new file printer bolt.
-	 * 
-	 * @param outputFile
-	 *            the output file
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	public FilePrinterBolt(final File outputFile) throws IOException {
-		this.outputFile = outputFile;
+    /**
+     * Instantiates a new file printer bolt.
+     * 
+     * @param outputFile the output file
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    public FilePrinterBolt(final File outputFile) throws IOException {
+	this.outputFile = outputFile;
 
+    }
+
+    @Override
+    public void execute(final Tuple tuple, final BasicOutputCollector collector) {
+	try {
+	    FileWriter writer = new FileWriter(this.outputFile, true);
+	    writer.append(tuple.toString() + "\n");
+	    writer.close();
+	} catch (IOException e) {
+	    throw new RuntimeException(e);
 	}
+    }
 
-	@Override
-	public void execute(final Tuple tuple, final BasicOutputCollector collector) {
-		try {
-			FileWriter writer = new FileWriter(this.outputFile, true);
-			writer.append(tuple.toString() + "\n");
-			writer.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
-	public void declareOutputFields(final OutputFieldsDeclarer ofd) {
-	}
+    @Override
+    public void declareOutputFields(final OutputFieldsDeclarer ofd) {
+    }
 
 }

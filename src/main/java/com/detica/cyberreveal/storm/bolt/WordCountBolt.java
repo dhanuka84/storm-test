@@ -16,25 +16,25 @@ import backtype.storm.tuple.Values;
  */
 public class WordCountBolt extends BaseBasicBolt {
 
-	private static final long serialVersionUID = 5623239456140401639L;
-	private final Map<String, Long> wordCounts = new HashMap<String, Long>();
+    private static final long serialVersionUID = 5623239456140401639L;
+    private final Map<String, Long> wordCounts = new HashMap<String, Long>();
 
-	@Override
-	public void execute(final Tuple tuple, final BasicOutputCollector collector) {
-		String word = tuple.getStringByField("word");
-		Long wordCount = this.wordCounts.get(word);
-		// If word has not been seen before, add it to the map
-		if (wordCount == null) {
-			wordCount = 0L;
-		}
-		wordCount = wordCount + 1;
-		this.wordCounts.put(word, wordCount);
-		collector.emit(new Values(word, wordCount));
+    @Override
+    public void execute(final Tuple tuple, final BasicOutputCollector collector) {
+	String word = tuple.getStringByField("word");
+	Long wordCount = this.wordCounts.get(word);
+	// If word has not been seen before, add it to the map
+	if (wordCount == null) {
+	    wordCount = 0L;
 	}
+	wordCount = wordCount + 1;
+	this.wordCounts.put(word, wordCount);
+	collector.emit(new Values(word, wordCount));
+    }
 
-	@Override
-	public void declareOutputFields(final OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("word", "count"));
-	}
+    @Override
+    public void declareOutputFields(final OutputFieldsDeclarer declarer) {
+	declarer.declare(new Fields("word", "count"));
+    }
 
 }
